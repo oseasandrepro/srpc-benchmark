@@ -1,6 +1,6 @@
 # SRPC Benchmark 1
 
-Now on verserion 4.x.x I run the first benchmark of the framework.
+On verserion 4.x.x was conducted the first benchmark of the framework.
 
 ## The aim
 
@@ -46,13 +46,12 @@ $$
 $$
 
 
-### Establishing a theoretical upper bound
+### Establishing a theoretical upper bound for Throughput
 
-Since each request should take ~100 ms(0.1 s) to complete, So, ignoring all framework/network/scheduling overhead,
-we can stabelish for each worker an approximate theoretical value for Throughput of:
+Since each request should take ~100 ms(0.1 s) to complete, ignoring all framework/network/scheduling overhead,
+we can stabelish for each worker number an approximate theoretical value for Throughput. Look:
 
-During one second, how many 100 ms requests can one worker complete? The answer is: exactly how many 100 ms we have in 1s(1000 ms).
-So we have:
+During one second, how many 100 ms requests can one worker complete? The answer is: exactly how many 100 ms we have in 1s(1000 ms):
 $$
 \frac{\text{100 ms}}{\text{1000 ms}} = 
 \text{10}
@@ -83,9 +82,11 @@ $$
 |     512 |                     5,120 req/s |
 |    1024 |                    10,240 req/s |
 
+![theoritical-througput](./images/theoritical-throughput.png)
+
 
 ### Metric collection
-In total was taked 40 tries, 5 for each worker thread number. For each try was registred both, server side and client side metrics. 
+In total was taked 40 tries, 5 for each worker number. For each try was registred both, server side and client side metrics. 
 
 - In server side the metrics(avg_cpu, memory) was registred by human observing the values of the metrics in resmon.exe interface. Was taked the max value observed doring 1 min, while the server was being bombarded with requests.
 
@@ -94,6 +95,14 @@ In total was taked 40 tries, 5 for each worker thread number. For each try was r
 ## Results and analyses
 
 ### Througput
+![throughputVSWorkersThreadst](./images/throughput.png)
+
+In throughput graphic we can see that the throughput increases as the number of worker threads increases. However, the gains are not linear. Up to 256 workers, increasing the thread pool produces substantial throughput gains. Beyond 256 workers, the improvement becomes progressively smaller, and the curve begins to flatten.
+
+This behavior indicates we are approaching the saturation region, where adding more worker threads provides diminishing gains. Between 512 and 1024 workers, the additional throughput is particularly small. 
+
+Therefore, 256 workers appears to be a practical scaling point, while 512+ workers operate close to the observed throughput ceiling.
+
 ### Latency
 ### AVG CPU
 ### Memory
