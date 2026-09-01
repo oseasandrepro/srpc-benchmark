@@ -1,0 +1,19 @@
+{
+  "dependencies": {
+    "@msgpack/msgpack": "^3.1.3"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.2"
+  },
+  "name": "using-x-k6",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs"
+}
