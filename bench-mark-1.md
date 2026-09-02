@@ -104,8 +104,27 @@ This behavior indicates we are approaching the saturation region, where adding m
 Therefore, 256 workers appears to be a practical scaling point, while 512+ workers operate close to the observed throughput ceiling.
 
 ### Latency
+
+![latency-normal-scale](./images/latency-normal-scale.png)
+![latency-log-scale](./images/latency-log-scale.png)
+
+The latency results show that increasing the number of worker threads reduces request latency. This is consistent with the throughput results: 
+with more workers available, more requests can be processed concurrently, reducing the time requests spend waiting for an available worker.
+
+The largest latency improvements occur up to 256 worker threads. Beyond this point, the gains become progressively smaller, which is consistent with the diminishing throughput gains observed in the throughput analysis.
+
+The P99 latency also shows a temporary increase at 128 workers, indicating higher tail latency at this configuration despite the improvement in median latency.
 ### AVG CPU
+
+
 ### Memory
+![memory](./images/memory.png)
+
+The memory results show that increasing the number of worker threads increases the server's memory consumption.
+
+Memory usage grows relatively slowly between 8 and 128 workers. However, the increase becomes considerably larger at higher worker counts, particularly between 256 and 1024 workers.
+
+This behavior is expected because each additional worker thread introduces memory overhead, such as its thread stack and associated runtime and operating-system structures
 
 ## Conclusion and comments
 Benchmarks with 1000 concurrent k6 virtual users showed strong scaling up to approximately 256 worker threads. Beyond this point, throughput gains diminished while CPU and memory usage continued to increase.
