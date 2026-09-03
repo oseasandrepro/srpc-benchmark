@@ -52,6 +52,7 @@ Since each request should take ~100 ms(0.1 s) to complete, ignoring all framewor
 we can stabelish for each worker number an approximate theoretical value for Throughput. Look:
 
 During one second, how many 100 ms requests can one worker complete? The answer is: exactly how many 100 ms we have in 1s(1000 ms):
+
 $$
 \frac{\text{100 ms}}{\text{1000 ms}} = 
 \text{10}
