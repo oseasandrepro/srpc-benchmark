@@ -4,7 +4,7 @@ On verserion 4.x.x was conducted the first benchmark of the framework.
 
 ## The aim
 
-SRPC currently uses a thread-per-request execution model, where incoming requests are processed by a fixed number(8) worker thread pool. The aim of this Benchmark is to identify "to what extent does this approach scale?" while I encreasing the number of works.
+SRPC currently uses a thread-per-request execution model. Where incoming requests are processed by a bounded thread-pool in which each active request occupies one worker thread. **The aim of this Benchmark is to identify "to what extent does this approach scale?" as the number of server worker threads increases and client side calling an I/O-bound RPC procedure.**
 
 ## Experiment design
 
@@ -32,7 +32,7 @@ The server was tested with 8 to 1,024 worker threads under 1,000 concurrent k6 v
 
 - Latency : the end-to-end time observed by the client - from sending the request until receiving the complete response.
 - Throughput: the number of requests the server successfully processes per second.
-- Memory : amount of physical memory currently in use by the process.
+- Memory : amount of the server process's memory currently resident in physical RAM, as reported by Windows Resource Monitor.
 - AVG CPU : process's average CPU utilization over a recent rolling time.
 
 $$
@@ -71,16 +71,16 @@ $$
 \frac{\text{10 * W (requests)}}{\text{1 s}}
 $$
 
-| Workers | Theoretical Throughput capacity |
-| ------: | ------------------------------: |
-|       8 |                        80 req/s |
-|      16 |                       160 req/s |
-|      32 |                       320 req/s |
-|      64 |                       640 req/s |
-|     128 |                     1,280 req/s |
-|     256 |                     2,560 req/s |
-|     512 |                     5,120 req/s |
-|    1024 |                    10,240 req/s |
+| Workers | Idealized Throughput Upper Bound |
+| ------: | ------------------------------:  |
+|       8 |                        80 req/s  |
+|      16 |                       160 req/s  |
+|      32 |                       320 req/s  |
+|      64 |                       640 req/s  |
+|     128 |                     1,280 req/s  |
+|     256 |                     2,560 req/s  |
+|     512 |                     5,120 req/s  |
+|    1024 |                    10,240 req/s  |
 
 ![theoritical-througput](./images/theoritical-throughput.png)
 
@@ -129,7 +129,7 @@ The memory results show that increasing the number of worker threads increases t
 
 Memory usage grows relatively slowly between 8 and 128 workers. However, the increase becomes considerably larger at higher worker counts, particularly between 256 and 1024 workers.
 
-This behavior is expected because each additional worker thread introduces memory overhead, such as its thread stack and associated runtime and operating-system structures
+This behavior is consistent with the expected overhead of maintaining a larger worker pool, including per-thread stacks and runtime/operating-system structures.
 
-## Conclusion and comments
-Benchmarks with 1000 concurrent k6 virtual users showed strong scaling up to approximately 256 worker threads. Beyond this point, throughput gains diminished while CPU and memory usage continued to increase.
+## Conclusion
+Under the tested workload, SRPC's current thread-pool execution model scales effectively up to approximately 256 worker threads. Beyond this point, throughput continues to increase but with progressively smaller gains, while CPU utilization and memory consumption continue to grow.
