@@ -124,6 +124,10 @@ The CPU graphic show that CPU utilization increases as the number of worker thre
 As concurrency increases, the server performs more request-processing work per unit of time, which increases CPU utilization.
 
 ### Memory
+> [!CAUTION]
+An inconsistency was identified in the memory data after the experiment. Because Windows was configured with the Portuguese locale, values such as 405.088 KB used a period as the thousands separator and therefore represented 405,088 KB. During data collection, these values were incorrectly recorded as 405.088 KB.
+As a result, the memory values presented in this graph are incorrect and should not be used for quantitative analysis. Although the plotted data shows an increasing trend, this trend should not be considered a validated experimental result until the memory measurements are corrected or the experiment is repeated.
+
 ![memory](./images/memory.png)
 
 The memory results show that increasing the number of worker threads increases the server's memory consumption.
@@ -133,4 +137,4 @@ Memory usage grows relatively slowly between 8 and 128 workers. However, the inc
 This behavior is consistent with the expected overhead of maintaining a larger worker pool, including per-thread stacks and runtime/operating-system structures.
 
 ## Conclusion
-Under the tested workload, SRPC's current thread-pool execution model scales effectively up to approximately 256 worker threads. Beyond this point, throughput continues to increase but with progressively smaller gains, while CPU utilization and memory consumption continue to grow.
+Under the tested workload, SRPC's current thread-pool execution model scales effectively up to approximately 256 worker threads. Beyond this point, throughput continues to increase but with progressively smaller gains, while CPU utilization ~~and memory consumption~~ continue to grow.
