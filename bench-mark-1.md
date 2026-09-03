@@ -114,8 +114,13 @@ with more workers available, more requests can be processed concurrently, reduci
 The largest latency improvements occur up to 256 worker threads. Beyond this point, the gains become progressively smaller, which is consistent with the diminishing throughput gains observed in the throughput analysis.
 
 The P99 latency also shows a temporary increase at 128 workers, indicating higher tail latency at this configuration despite the improvement in median latency.
-### AVG CPU
 
+### AVG CPU
+![memory](./images/cpu.png)
+
+The CPU graphic show that CPU utilization increases as the number of worker threads increases. Since the called procedure is I/O-bound, additional workers allow the server to handle more requests concurrently while other workers are waiting on I/O.
+
+As concurrency increases, the server performs more request-processing work per unit of time, which increases CPU utilization.
 
 ### Memory
 ![memory](./images/memory.png)
