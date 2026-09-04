@@ -1,6 +1,6 @@
 # SRPC Benchmark 1
 
-On verserion 4.x.x was conducted the first benchmark of the framework.
+On verserion 4.3.1 was conducted the first benchmark of the framework.
 
 ## The aim
 
